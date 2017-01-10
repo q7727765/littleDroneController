@@ -33,6 +33,11 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "stm32f1xx_hal.h"
+#include "nrf24l01.h"
+#include "sys.h"
+#include "delay.h"
+#include "usart.h"
+#include "HAL.h"
 
 /* USER CODE BEGIN Includes */
 
@@ -72,7 +77,18 @@ static void MX_NVIC_Init(void);
 /* USER CODE END PFP */
 
 /* USER CODE BEGIN 0 */
+void init(void)
+{
+	NRF24L01_Init();
 
+	while(NRF24L01_Check()){
+		SendChar("nrf ing\r\n");
+		delay_ms(500);
+	}
+	SendChar("nrf ok\r\n");
+
+	NRF24L01_TX_Mode();
+}
 /* USER CODE END 0 */
 
 int main(void)
@@ -104,15 +120,27 @@ int main(void)
 
   /* USER CODE BEGIN 2 */
 
+  init();
+
+  configureScheduler();
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+  rc.value[0] = 1000;
+  rc.value[1] = 1100;
+  rc.value[2] = 1200;
+  rc.value[3] = 1300;
+  rc.value[4] = 1400;
+  rc.value[5] = 1500;
+  rc.value[6] = 1600;
+  rc.value[7] = 1700;
+
   while (1)
   {
-  /* USER CODE END WHILE */
 
-  /* USER CODE BEGIN 3 */
+	  scheduler();
+
 
   }
   /* USER CODE END 3 */
@@ -368,7 +396,7 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOB_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(BEEP_GPIO_Port, BEEP_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(BEEP_GPIO_Port, BEEP_Pin, GPIO_PIN_SET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOB, W_CE_Pin|W_CSN_Pin, GPIO_PIN_SET);
