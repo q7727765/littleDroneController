@@ -13,15 +13,22 @@
 #include "HAL.h"
 #include "config_tasks.h"
 #include "nrf24l01.h"
-
+#include "stdio.h"
+extern ADC_HandleTypeDef hadc1;
+extern ADC_HandleTypeDef hadc2;
 void taskUsartDebug(void)
 {
 
+//	uint16_t adc_dat;
+//	adc_dat = (uint16_t)HAL_ADC_GetValue(&hadc2);
+//
+//	SendChar("\r\nadc:");
+//	SendInt(adc_dat);
+//	_n();
+
+
+#if 1
 	SendChar("usart running...\r\n");
-
-//	ANO_DT_Data_Exchange();
-#if 0
-
 #endif
 }
 void taskRcTransmit(void)

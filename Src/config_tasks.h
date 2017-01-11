@@ -31,6 +31,8 @@ typedef enum {
 } cfTaskId_e;
 
 
+void configureScheduler(void);
+
 void taskSystem(void);
 void taskRcTransmit(void);
 void taskRUNLED(void);
