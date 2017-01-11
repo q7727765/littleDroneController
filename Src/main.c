@@ -33,6 +33,8 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "stm32f1xx_hal.h"
+
+/* USER CODE BEGIN Includes */
 #include "nrf24l01.h"
 #include "sys.h"
 #include "delay.h"
@@ -40,9 +42,6 @@
 #include "HAL.h"
 #include "config_tasks.h"
 #include "scheduler.h"
-
-/* USER CODE BEGIN Includes */
-
 /* USER CODE END Includes */
 
 /* Private variables ---------------------------------------------------------*/
@@ -110,22 +109,12 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
+  MX_ADC1_Init();
+  MX_ADC2_Init();
   MX_USART1_UART_Init();
   MX_SPI2_Init();
   MX_USART3_UART_Init();
   MX_TIM3_Init();
-
-
-  SendChar("haha0\r\n");
-  delay_ms(100);
-  MX_ADC1_Init();
-  SendChar("haha1\r\n");
-  delay_ms(100);
-  MX_ADC2_Init();
-  SendChar("haha2\r\n");
-  delay_ms(100);
-
-
 
   /* Initialize interrupts */
   MX_NVIC_Init();
@@ -147,14 +136,17 @@ int main(void)
   rc.value[5] = 1500;
   rc.value[6] = 1600;
   rc.value[7] = 1700;
-	HAL_ADC_Start(&hadc1);
+
+  	//HAL_ADCEx_Calibration_Start(&hadc1);
+	//HAL_ADCEx_InjectedStart(&hadc1);
 	HAL_ADC_Start(&hadc2);
+//	HAL_DMA_PollForTransfer();
   while (1)
   {
+  /* USER CODE END WHILE */
 
+  /* USER CODE BEGIN 3 */
 	  scheduler();
-
-
   }
   /* USER CODE END 3 */
 
@@ -229,7 +221,7 @@ static void MX_NVIC_Init(void)
 static void MX_ADC1_Init(void)
 {
 
-  ADC_ChannelConfTypeDef sConfig;
+  ADC_InjectionConfTypeDef sConfigInjected;
 
     /**Common config 
     */
@@ -237,47 +229,51 @@ static void MX_ADC1_Init(void)
   hadc1.Init.ScanConvMode = ADC_SCAN_ENABLE;
   hadc1.Init.ContinuousConvMode = ENABLE;
   hadc1.Init.DiscontinuousConvMode = DISABLE;
-  hadc1.Init.ExternalTrigConv = ADC_SOFTWARE_START;
   hadc1.Init.DataAlign = ADC_DATAALIGN_RIGHT;
-  hadc1.Init.NbrOfConversion = 4;
+  hadc1.Init.NbrOfConversion = 1;
   if (HAL_ADC_Init(&hadc1) != HAL_OK)
   {
     Error_Handler();
   }
 
-    /**Configure Regular Channel 
+    /**Configure Injected Channel 
     */
-  sConfig.Channel = ADC_CHANNEL_0;
-  sConfig.Rank = 1;
-  sConfig.SamplingTime = ADC_SAMPLETIME_7CYCLES_5;
-  if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
+  sConfigInjected.InjectedChannel = ADC_CHANNEL_0;
+  sConfigInjected.InjectedRank = 1;
+  sConfigInjected.InjectedNbrOfConversion = 4;
+  sConfigInjected.InjectedSamplingTime = ADC_SAMPLETIME_7CYCLES_5;
+  sConfigInjected.ExternalTrigInjecConv = ADC_INJECTED_SOFTWARE_START;
+  sConfigInjected.AutoInjectedConv = ENABLE;
+  sConfigInjected.InjectedDiscontinuousConvMode = DISABLE;
+  sConfigInjected.InjectedOffset = 0;
+  if (HAL_ADCEx_InjectedConfigChannel(&hadc1, &sConfigInjected) != HAL_OK)
   {
     Error_Handler();
   }
 
-    /**Configure Regular Channel 
+    /**Configure Injected Channel 
     */
-  sConfig.Channel = ADC_CHANNEL_1;
-  sConfig.Rank = 2;
-  if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
+  sConfigInjected.InjectedChannel = ADC_CHANNEL_1;
+  sConfigInjected.InjectedRank = 2;
+  if (HAL_ADCEx_InjectedConfigChannel(&hadc1, &sConfigInjected) != HAL_OK)
   {
     Error_Handler();
   }
 
-    /**Configure Regular Channel 
+    /**Configure Injected Channel 
     */
-  sConfig.Channel = ADC_CHANNEL_2;
-  sConfig.Rank = 3;
-  if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
+  sConfigInjected.InjectedChannel = ADC_CHANNEL_2;
+  sConfigInjected.InjectedRank = 3;
+  if (HAL_ADCEx_InjectedConfigChannel(&hadc1, &sConfigInjected) != HAL_OK)
   {
     Error_Handler();
   }
 
-    /**Configure Regular Channel 
+    /**Configure Injected Channel 
     */
-  sConfig.Channel = ADC_CHANNEL_3;
-  sConfig.Rank = 4;
-  if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
+  sConfigInjected.InjectedChannel = ADC_CHANNEL_3;
+  sConfigInjected.InjectedRank = 4;
+  if (HAL_ADCEx_InjectedConfigChannel(&hadc1, &sConfigInjected) != HAL_OK)
   {
     Error_Handler();
   }
