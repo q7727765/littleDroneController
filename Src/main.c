@@ -110,6 +110,12 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
+  MX_USART1_UART_Init();
+  MX_SPI2_Init();
+  MX_USART3_UART_Init();
+  MX_TIM3_Init();
+
+
   SendChar("haha0\r\n");
   delay_ms(100);
   MX_ADC1_Init();
@@ -119,10 +125,7 @@ int main(void)
   SendChar("haha2\r\n");
   delay_ms(100);
 
-  MX_USART1_UART_Init();
-  MX_SPI2_Init();
-  MX_USART3_UART_Init();
-  MX_TIM3_Init();
+
 
   /* Initialize interrupts */
   MX_NVIC_Init();
@@ -144,8 +147,8 @@ int main(void)
   rc.value[5] = 1500;
   rc.value[6] = 1600;
   rc.value[7] = 1700;
-//	HAL_ADC_Start(&hadc1);
-//	HAL_ADC_Start(&hadc2);
+	HAL_ADC_Start(&hadc1);
+	HAL_ADC_Start(&hadc2);
   while (1)
   {
 
@@ -226,7 +229,6 @@ static void MX_NVIC_Init(void)
 static void MX_ADC1_Init(void)
 {
 
-  ADC_MultiModeTypeDef multimode;
   ADC_ChannelConfTypeDef sConfig;
 
     /**Common config 
@@ -239,14 +241,6 @@ static void MX_ADC1_Init(void)
   hadc1.Init.DataAlign = ADC_DATAALIGN_RIGHT;
   hadc1.Init.NbrOfConversion = 4;
   if (HAL_ADC_Init(&hadc1) != HAL_OK)
-  {
-    Error_Handler();
-  }
-
-    /**Configure the ADC multi-mode 
-    */
-  multimode.Mode = ADC_DUALMODE_REGSIMULT;
-  if (HAL_ADCEx_MultiModeConfigChannel(&hadc1, &multimode) != HAL_OK)
   {
     Error_Handler();
   }
@@ -294,7 +288,6 @@ static void MX_ADC1_Init(void)
 static void MX_ADC2_Init(void)
 {
 
-  ADC_MultiModeTypeDef multimode;
   ADC_ChannelConfTypeDef sConfig;
 
     /**Common config 
@@ -303,17 +296,10 @@ static void MX_ADC2_Init(void)
   hadc2.Init.ScanConvMode = ADC_SCAN_DISABLE;
   hadc2.Init.ContinuousConvMode = ENABLE;
   hadc2.Init.DiscontinuousConvMode = DISABLE;
+  hadc2.Init.ExternalTrigConv = ADC_SOFTWARE_START;
   hadc2.Init.DataAlign = ADC_DATAALIGN_RIGHT;
   hadc2.Init.NbrOfConversion = 1;
   if (HAL_ADC_Init(&hadc2) != HAL_OK)
-  {
-    Error_Handler();
-  }
-
-    /**Configure the ADC multi-mode 
-    */
-  multimode.Mode = ADC_DUALMODE_REGSIMULT;
-  if (HAL_ADCEx_MultiModeConfigChannel(&hadc2, &multimode) != HAL_OK)
   {
     Error_Handler();
   }

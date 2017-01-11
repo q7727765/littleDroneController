@@ -63,6 +63,13 @@ cfTask_t cfTasks[] = {
         .staticPriority = TASK_PRIORITY_HIGH,
     },
 
+    [TASK_BATTERY_MONITOR] = {
+        .taskName = "BATTERY_MONITOR",
+        .taskFunc = taskBatteryMoniter,
+        .desiredPeriod = 500000,
+        .staticPriority = TASK_PRIORITY_MEDIUM,
+    },
+
 };
 
 void configureScheduler(void)
@@ -72,6 +79,7 @@ void configureScheduler(void)
     setTaskEnabled(TASK_RC_TRANSMIT, 1);
     setTaskEnabled(TASK_RUNLED, 1);
     setTaskEnabled(TASK_USARTT_DEBUG, 1);
+    setTaskEnabled(TASK_BATTERY_MONITOR, 1);
 
 
 }

@@ -26,6 +26,8 @@ typedef enum {
 	TASK_RUNLED,
 
 	TASK_USARTT_DEBUG,
+
+	TASK_BATTERY_MONITOR,
     /* Count of real tasks */
     TASK_COUNT
 } cfTaskId_e;
@@ -37,4 +39,4 @@ void taskSystem(void);
 void taskRcTransmit(void);
 void taskRUNLED(void);
 void taskUsartDebug(void);
-
+void taskBatteryMoniter(void);

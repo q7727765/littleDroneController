@@ -16,15 +16,11 @@
 #include "stdio.h"
 extern ADC_HandleTypeDef hadc1;
 extern ADC_HandleTypeDef hadc2;
+
+battery_t battery;
+
 void taskUsartDebug(void)
 {
-
-//	uint16_t adc_dat;
-//	adc_dat = (uint16_t)HAL_ADC_GetValue(&hadc2);
-//
-//	SendChar("\r\nadc:");
-//	SendInt(adc_dat);
-//	_n();
 
 
 #if 1
@@ -37,6 +33,20 @@ void taskRcTransmit(void)
 		  NRF24L01_TxPacket((u8*)rc.value);
 
 }
+
+void taskBatteryMoniter(void)
+{
+
+	battery.scale = 2.053;
+	battery.raw_data = (uint16_t)HAL_ADC_GetValue(&hadc2);
+	battery.voltage = ((float)battery.raw_data/4096)*battery.scale*3.33;
+	SendChar("\r\nadc:");
+
+	SendDouble(battery.voltage);
+	_n();
+
+}
+
 
 void taskRUNLED(void)
 {

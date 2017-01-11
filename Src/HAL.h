@@ -62,14 +62,28 @@ enum rc_e{
 	rc_aux4_num
 };
 
-//typedef void (*rcUpdateFunPtr)(void);
 typedef struct rc_s {
 	uint16_t value[8];
 	uint8_t	 direct[8];
 
-//	rcUpdateFunPtr rc_update;
-
 }rc_t;
+
+
+/*
+ * \brief 电池管理结构体
+ *
+ * \para  raw_data : 12位ad读出来的原始数据
+ *        voltage  : 转换后的真正电压值
+ *        vol_alarm: 报警电压
+ *        scale    : raw_data转换为voltage时的比例系数
+ * \addition 公式: 	voltage = ((float)raw_data/4096)*3.33*scale;
+ * */
+typedef struct battery_s{
+	uint16_t raw_data;
+	float voltage;
+	float vol_alarm;
+	float scale;
+}battery_t;
 
 //extern acc_t acc;
 //extern gyro_t gyro;
@@ -77,6 +91,7 @@ typedef struct rc_s {
 //extern baro_t baro;
 //extern motor_t motor;
 extern rc_t rc;
+extern battery_t battery;
 
 //void motor_init();
 //void motor_out(u16 m1,u16 m2,u16 m3,u16 m4);
@@ -84,4 +99,4 @@ extern rc_t rc;
 //extern void detectGyro();
 //extern void detectMag();
 //extern void detectBaro();
-extern uint32_t recalculateBarometerTotal(uint8_t baroSampleCount, uint32_t pressureTotal, int32_t newPressureReading);
+//extern uint32_t recalculateBarometerTotal(uint8_t baroSampleCount, uint32_t pressureTotal, int32_t newPressureReading);
