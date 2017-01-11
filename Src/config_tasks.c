@@ -45,7 +45,7 @@ cfTask_t cfTasks[] = {
     [TASK_RC_TRANSMIT] = {
         .taskName = "RC_TRANSMIT",
         .taskFunc = taskRcTransmit,
-        .desiredPeriod = 500000,
+        .desiredPeriod = 15000,
         .staticPriority = TASK_PRIORITY_REALTIME,
     },
 
@@ -59,7 +59,7 @@ cfTask_t cfTasks[] = {
     [TASK_USARTT_DEBUG] = {
         .taskName = "USARTT_DEBUG",
         .taskFunc = taskUsartDebug,
-        .desiredPeriod = 500000,
+        .desiredPeriod = 100000,
         .staticPriority = TASK_PRIORITY_HIGH,
     },
 

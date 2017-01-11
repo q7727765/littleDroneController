@@ -52,19 +52,23 @@
 
 
 enum rc_e{
-	rc_roll_num		= 0,
-	rc_pitch_num 	,
-	rc_throttle_num	,
+	rc_rol_num		= 0,
+	rc_pit_num 		,
+	rc_thr_num		,
 	rc_yaw_num		,
 	rc_aux1_num		,
 	rc_aux2_num		,
-	rc_aux3_num		,
-	rc_aux4_num
+	rc_push_num		,
+	rc_ball_num
 };
 
 typedef struct rc_s {
-	uint16_t value[8];
-	uint8_t	 direct[8];
+	uint16_t adc_raw[4];	//从adc读取的原始数据（2024~4096）
+	uint16_t value[8];		//通道值。真正要传过去飞机的值。（1000~2000）
+	int16_t  trim[4];		//通道微调。左负右正
+	int8_t	 direct[8];		//通道方向。（-1：反向。1：正向）
+	uint16_t adc_max[4];	//记录前四个通道adc最大值，用于校准遥控器量程。
+	uint16_t adc_min[4];	//记录前四个通道adc最小值，用于校准遥控器量程。
 
 }rc_t;
 
@@ -93,6 +97,7 @@ typedef struct battery_s{
 extern rc_t rc;
 extern battery_t battery;
 
+void rc_init(void);
 //void motor_init();
 //void motor_out(u16 m1,u16 m2,u16 m3,u16 m4);
 //extern void detectAcc();

@@ -80,7 +80,7 @@ static void MX_NVIC_Init(void);
 /* USER CODE BEGIN 0 */
 void init(void)
 {
-	NRF24L01_Init();
+	rc_init();
 
 	while(NRF24L01_Check()){
 		SendChar("nrf ing\r\n");
@@ -128,18 +128,19 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  rc.value[0] = 1000;
-  rc.value[1] = 1100;
-  rc.value[2] = 1200;
-  rc.value[3] = 1300;
-  rc.value[4] = 1400;
-  rc.value[5] = 1500;
-  rc.value[6] = 1600;
-  rc.value[7] = 1700;
+  rc.value[0] = 8800;
+  rc.value[1] = 8800;
+  rc.value[2] = 8800;
+  rc.value[3] = 8800;
+  rc.value[4] = 8800;
+  rc.value[5] = 8800;
+  rc.value[6] = 8800;
+  rc.value[7] = 8800;
 
-  	//HAL_ADCEx_Calibration_Start(&hadc1);
-	//HAL_ADCEx_InjectedStart(&hadc1);
 	HAL_ADC_Start(&hadc2);
+
+  	HAL_ADCEx_Calibration_Start(&hadc1);
+
 //	HAL_DMA_PollForTransfer();
   while (1)
   {
@@ -243,7 +244,7 @@ static void MX_ADC1_Init(void)
   sConfigInjected.InjectedNbrOfConversion = 4;
   sConfigInjected.InjectedSamplingTime = ADC_SAMPLETIME_7CYCLES_5;
   sConfigInjected.ExternalTrigInjecConv = ADC_INJECTED_SOFTWARE_START;
-  sConfigInjected.AutoInjectedConv = ENABLE;
+  sConfigInjected.AutoInjectedConv = DISABLE;
   sConfigInjected.InjectedDiscontinuousConvMode = DISABLE;
   sConfigInjected.InjectedOffset = 0;
   if (HAL_ADCEx_InjectedConfigChannel(&hadc1, &sConfigInjected) != HAL_OK)
