@@ -70,6 +70,12 @@ cfTask_t cfTasks[] = {
         .staticPriority = TASK_PRIORITY_MEDIUM,
     },
 
+    [TASK_KEY_EVEN] = {
+        .taskName = "KEY_EVEN",
+        .taskFunc = taskKeyEven,
+        .desiredPeriod = 5000,
+        .staticPriority = TASK_PRIORITY_MEDIUM,
+    },
 };
 
 void configureScheduler(void)
@@ -80,6 +86,6 @@ void configureScheduler(void)
     setTaskEnabled(TASK_RUNLED, 1);
     setTaskEnabled(TASK_USARTT_DEBUG, 1);
     setTaskEnabled(TASK_BATTERY_MONITOR, 1);
-
+    setTaskEnabled(TASK_KEY_EVEN, 1);
 
 }

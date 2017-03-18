@@ -69,6 +69,7 @@ typedef struct rc_s {
 	uint16_t adc_raw[4];	//从adc读取的原始数据（2024~4096）
 	int16_t value[10];		//通道值。真正要传过去飞机的值。（1000~2000）
 	int16_t  trim[4];		//通道微调。左负右正
+	uint16_t adc_trim[4];	//记录4个摇杆处于标准位置时的adc值（除了油门为低，其他均为中）
 	int8_t	 direct[8];		//通道方向。（-1：反向。1：正向）
 	uint16_t adc_max[4];	//记录前四个通道adc最大值，用于校准遥控器量程。
 	uint16_t adc_min[4];	//记录前四个通道adc最小值，用于校准遥控器量程。
@@ -98,9 +99,12 @@ typedef struct battery_s{
 //extern baro_t baro;
 //extern motor_t motor;
 extern rc_t rc;
+extern uint8_t rc_calib_pass;
 extern battery_t battery;
 
 void rc_init(void);
+void rc_calib(void);
+
 //void motor_init();
 //void motor_out(u16 m1,u16 m2,u16 m3,u16 m4);
 //extern void detectAcc();

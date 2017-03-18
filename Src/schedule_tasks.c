@@ -78,27 +78,30 @@ void taskRcTransmit(void)
 
 
 
-	rc.value[rc_pit_num] = -(rc.direct[rc_pit_num] - 1)/2 * 1000
-						+ rc.direct[rc_pit_num] * (float)(rc.adc_raw[rc_pit_num] - rc.adc_min[rc_pit_num]) / (rc.adc_max[rc_pit_num]-rc.adc_min[rc_pit_num]) * 1000
-						+ 1000 + rc.trim[rc_pit_num];
+//	rc.value[rc_pit_num] = -(rc.direct[rc_pit_num] - 1)/2 * 1000
+//						+ rc.direct[rc_pit_num] * (float)(rc.adc_raw[rc_pit_num] - rc.adc_min[rc_pit_num]) / (rc.adc_max[rc_pit_num]-rc.adc_min[rc_pit_num]) * 1000
+//						+ 1000 + rc.trim[rc_pit_num];
+//
+//
+//	rc.value[rc_rol_num] = -(rc.direct[rc_rol_num] - 1)/2 * 1000
+//						+ rc.direct[rc_rol_num] * (float)(rc.adc_raw[rc_rol_num] - rc.adc_min[rc_rol_num]) / (rc.adc_max[rc_rol_num]-rc.adc_min[rc_rol_num]) * 1000
+//						+ 1000 + rc.trim[rc_rol_num];
+//
+//
+//	rc.value[rc_thr_num] =  -(rc.direct[rc_thr_num] - 1)/2  * 1000
+//						+ rc.direct[rc_thr_num] * (float)(rc.adc_raw[rc_thr_num] - rc.adc_min[rc_thr_num]) / (rc.adc_max[rc_thr_num]-rc.adc_min[rc_thr_num]) * 1000
+//						+ 1000 + rc.trim[rc_thr_num];
+//
+//
+//	rc.value[rc_yaw_num] = -(rc.direct[rc_yaw_num] - 1)/2 * 1000
+//						+ rc.direct[rc_yaw_num] * (float)(rc.adc_raw[rc_yaw_num] - rc.adc_min[rc_yaw_num]) / (rc.adc_max[rc_yaw_num]-rc.adc_min[rc_yaw_num]) * 1000
+//						+ 1000 + rc.trim[rc_yaw_num];
 
 
-	rc.value[rc_rol_num] = -(rc.direct[rc_rol_num] - 1)/2 * 1000
-						+ rc.direct[rc_rol_num] * (float)(rc.adc_raw[rc_rol_num] - rc.adc_min[rc_rol_num]) / (rc.adc_max[rc_rol_num]-rc.adc_min[rc_rol_num]) * 1000
-						+ 1000 + rc.trim[rc_rol_num];
-
-
-	rc.value[rc_thr_num] =  -(rc.direct[rc_thr_num] - 1)/2  * 1000
-						+ rc.direct[rc_thr_num] * (float)(rc.adc_raw[rc_thr_num] - rc.adc_min[rc_thr_num]) / (rc.adc_max[rc_thr_num]-rc.adc_min[rc_thr_num]) * 1000
-						+ 1000 + rc.trim[rc_thr_num];
-
-
-	rc.value[rc_yaw_num] = -(rc.direct[rc_yaw_num] - 1)/2 * 1000
-						+ rc.direct[rc_yaw_num] * (float)(rc.adc_raw[rc_yaw_num] - rc.adc_min[rc_yaw_num]) / (rc.adc_max[rc_yaw_num]-rc.adc_min[rc_yaw_num]) * 1000
-						+ 1000 + rc.trim[rc_yaw_num];
-
-
-
+	rc.value[rc_thr_num] = 1000 + (rc.adc_raw[rc_thr_num] - rc.adc_trim[rc_thr_num]) * 1000.f / 2048.f;
+	rc.value[rc_yaw_num] = 1500 + (rc.adc_raw[rc_yaw_num] - rc.adc_trim[rc_yaw_num]) * 1000.f / 2048.f;
+	rc.value[rc_pit_num] = 1500 + (rc.adc_raw[rc_pit_num] - rc.adc_trim[rc_pit_num]) * 1000.f / 2048.f;
+	rc.value[rc_rol_num] = 1500 + (rc.adc_raw[rc_rol_num] - rc.adc_trim[rc_rol_num]) * 1000.f / 2048.f;
 
 
 
@@ -116,6 +119,25 @@ void taskRcTransmit(void)
 		&&rc.value[rc_push_num]>=800&&rc.value[rc_push_num]<=2200)
 	NRF24L01_TxPacket((u8*)rc.value);
 
+}
+
+void taskKeyEven(void)
+{
+	static uint8_t key_down = 0,key_up = 1;
+	if(key_up == 1 && HAL_GPIO_ReadPin(pushkey_GPIO_Port,pushkey_Pin) == 0){
+		key_down = 1;
+		key_up   = 0;
+		return;
+	}else if(key_down == 1 && HAL_GPIO_ReadPin(pushkey_GPIO_Port,pushkey_Pin) == 0){
+
+		rc_calib_pass = 0;
+		rc_calib();
+		rc_calib_pass = 1;
+		while(HAL_GPIO_ReadPin(pushkey_GPIO_Port,pushkey_Pin) == 0);
+		key_down = 0;
+		key_up   = 1;
+
+	}
 }
 
 void taskBatteryMoniter(void)

@@ -28,6 +28,8 @@ typedef enum {
 	TASK_USARTT_DEBUG,
 
 	TASK_BATTERY_MONITOR,
+
+	TASK_KEY_EVEN,
     /* Count of real tasks */
     TASK_COUNT
 } cfTaskId_e;
@@ -40,3 +42,4 @@ void taskRcTransmit(void);
 void taskLED(void);
 void taskUsartDebug(void);
 void taskBatteryMoniter(void);
+void taskKeyEven(void);
