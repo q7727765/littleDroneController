@@ -59,12 +59,15 @@ enum rc_e{
 	rc_aux1_num		,
 	rc_aux2_num		,
 	rc_push_num		,
-	rc_ball_num
+	rc_ball_num		,
+	rc_check_pin1	,
+	rc_check_pin2	,
+
 };
 
 typedef struct rc_s {
 	uint16_t adc_raw[4];	//从adc读取的原始数据（2024~4096）
-	uint16_t value[8];		//通道值。真正要传过去飞机的值。（1000~2000）
+	int16_t value[10];		//通道值。真正要传过去飞机的值。（1000~2000）
 	int16_t  trim[4];		//通道微调。左负右正
 	int8_t	 direct[8];		//通道方向。（-1：反向。1：正向）
 	uint16_t adc_max[4];	//记录前四个通道adc最大值，用于校准遥控器量程。

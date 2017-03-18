@@ -5,6 +5,7 @@
  *      Author: 50430
  */
 
+#include "rc_filter.h"
 #include "stm32f1xx_hal.h"
 #include "delay.h"
 #include "usart.h"
@@ -14,6 +15,7 @@
 #include "config_tasks.h"
 #include "nrf24l01.h"
 #include "stdio.h"
+
 extern ADC_HandleTypeDef hadc1;
 extern ADC_HandleTypeDef hadc2;
 
@@ -69,33 +71,49 @@ void taskRcTransmit(void)
 {
 	HAL_ADCEx_InjectedStart(&hadc1);
 
-	rc.adc_raw[rc_thr_num] = HAL_ADCEx_InjectedGetValue(&hadc1,1);
-	rc.adc_raw[rc_yaw_num] = HAL_ADCEx_InjectedGetValue(&hadc1,2);
-	rc.adc_raw[rc_pit_num] = HAL_ADCEx_InjectedGetValue(&hadc1,3);
-	rc.adc_raw[rc_rol_num] = HAL_ADCEx_InjectedGetValue(&hadc1,4);
+	rc.adc_raw[rc_thr_num] = HAL_ADCEx_InjectedGetValue(&hadc1,1);//rc_get_thr_smooth_adc();
+	rc.adc_raw[rc_yaw_num] = HAL_ADCEx_InjectedGetValue(&hadc1,2);//rc_get_yaw_smooth_adc();
+	rc.adc_raw[rc_pit_num] = HAL_ADCEx_InjectedGetValue(&hadc1,3);//rc_get_pit_smooth_adc();
+	rc.adc_raw[rc_rol_num] = HAL_ADCEx_InjectedGetValue(&hadc1,4);//rc_get_rol_smooth_adc();
 
+
+
+	rc.value[rc_pit_num] = -(rc.direct[rc_pit_num] - 1)/2 * 1000
+						+ rc.direct[rc_pit_num] * (float)(rc.adc_raw[rc_pit_num] - rc.adc_min[rc_pit_num]) / (rc.adc_max[rc_pit_num]-rc.adc_min[rc_pit_num]) * 1000
+						+ 1000 + rc.trim[rc_pit_num];
+
+
+	rc.value[rc_rol_num] = -(rc.direct[rc_rol_num] - 1)/2 * 1000
+						+ rc.direct[rc_rol_num] * (float)(rc.adc_raw[rc_rol_num] - rc.adc_min[rc_rol_num]) / (rc.adc_max[rc_rol_num]-rc.adc_min[rc_rol_num]) * 1000
+						+ 1000 + rc.trim[rc_rol_num];
 
 
 	rc.value[rc_thr_num] =  -(rc.direct[rc_thr_num] - 1)/2  * 1000
 						+ rc.direct[rc_thr_num] * (float)(rc.adc_raw[rc_thr_num] - rc.adc_min[rc_thr_num]) / (rc.adc_max[rc_thr_num]-rc.adc_min[rc_thr_num]) * 1000
 						+ 1000 + rc.trim[rc_thr_num];
 
+
 	rc.value[rc_yaw_num] = -(rc.direct[rc_yaw_num] - 1)/2 * 1000
 						+ rc.direct[rc_yaw_num] * (float)(rc.adc_raw[rc_yaw_num] - rc.adc_min[rc_yaw_num]) / (rc.adc_max[rc_yaw_num]-rc.adc_min[rc_yaw_num]) * 1000
 						+ 1000 + rc.trim[rc_yaw_num];
 
-	rc.value[rc_pit_num] = -(rc.direct[rc_pit_num] - 1)/2 * 1000
-						+ rc.direct[rc_pit_num] * (float)(rc.adc_raw[rc_pit_num] - rc.adc_min[rc_pit_num]) / (rc.adc_max[rc_pit_num]-rc.adc_min[rc_pit_num]) * 1000
-						+ 1000 + rc.trim[rc_pit_num];
 
-	rc.value[rc_rol_num] = -(rc.direct[rc_rol_num] - 1)/2 * 1000
-						+ rc.direct[rc_rol_num] * (float)(rc.adc_raw[rc_rol_num] - rc.adc_min[rc_rol_num]) / (rc.adc_max[rc_rol_num]-rc.adc_min[rc_rol_num]) * 1000
-						+ 1000 + rc.trim[rc_rol_num];
 
-	rc.value[rc_aux1_num] = -(rc.direct[rc_aux1_num] - 1)/2 + rc.direct[rc_aux1_num] * HAL_GPIO_ReadPin(auxkey_l_GPIO_Port,auxkey_l_Pin);
-	rc.value[rc_aux2_num] = -(rc.direct[rc_aux2_num] - 1)/2 + rc.direct[rc_aux2_num] * HAL_GPIO_ReadPin(auxkey_r_GPIO_Port,auxkey_r_Pin);
-	rc.value[rc_push_num] = -(rc.direct[rc_push_num] - 1)/2 + rc.direct[rc_push_num] * HAL_GPIO_ReadPin(pushkey_GPIO_Port,pushkey_Pin);
 
+
+
+	rc.value[rc_aux1_num] = (-(rc.direct[rc_aux1_num] - 1)/2 + rc.direct[rc_aux1_num] * HAL_GPIO_ReadPin(auxkey_l_GPIO_Port,auxkey_l_Pin) + 1) * 1000;
+	rc.value[rc_aux2_num] = (-(rc.direct[rc_aux2_num] - 1)/2 + rc.direct[rc_aux2_num] * HAL_GPIO_ReadPin(auxkey_r_GPIO_Port,auxkey_r_Pin) + 1) * 1000;
+	rc.value[rc_push_num] = (-(rc.direct[rc_push_num] - 1)/2 + rc.direct[rc_push_num] * HAL_GPIO_ReadPin(pushkey_GPIO_Port,pushkey_Pin) + 1) * 1000;
+
+
+	if(rc.value[rc_pit_num]>=800&&rc.value[rc_pit_num]<=2200
+		&&rc.value[rc_rol_num]>=800&&rc.value[rc_rol_num]<=2200
+		&&rc.value[rc_thr_num]>=800&&rc.value[rc_thr_num]<=2200
+		&&rc.value[rc_yaw_num]>=800&&rc.value[rc_yaw_num]<=2200
+		&&rc.value[rc_aux1_num]>=800&&rc.value[rc_aux1_num]<=2200
+		&&rc.value[rc_aux2_num]>=800&&rc.value[rc_aux2_num]<=2200
+		&&rc.value[rc_push_num]>=800&&rc.value[rc_push_num]<=2200)
 	NRF24L01_TxPacket((u8*)rc.value);
 
 }
@@ -114,7 +132,7 @@ void taskBatteryMoniter(void)
 }
 
 
-void taskRUNLED(void)
+void taskLED(void)
 {
 	static char sta = 0;
 

@@ -45,13 +45,13 @@ cfTask_t cfTasks[] = {
     [TASK_RC_TRANSMIT] = {
         .taskName = "RC_TRANSMIT",
         .taskFunc = taskRcTransmit,
-        .desiredPeriod = 15000,
+        .desiredPeriod = 10000,
         .staticPriority = TASK_PRIORITY_REALTIME,
     },
 
     [TASK_RUNLED] = {
         .taskName = "RUNLED",
-        .taskFunc = taskRUNLED,
+        .taskFunc = taskLED,
         .desiredPeriod = 500000,
         .staticPriority = TASK_PRIORITY_LOW,
     },

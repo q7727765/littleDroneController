@@ -89,6 +89,8 @@ void init(void)
 	SendChar("nrf ok\r\n");
 
 	NRF24L01_TX_Mode();
+
+	//EE_READ_RC_SET();
 }
 /* USER CODE END 0 */
 
@@ -128,14 +130,14 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  rc.value[0] = 8800;
-  rc.value[1] = 8800;
-  rc.value[2] = 8800;
-  rc.value[3] = 8800;
-  rc.value[4] = 8800;
-  rc.value[5] = 8800;
-  rc.value[6] = 8800;
-  rc.value[7] = 8800;
+  rc.value[0] = 2000;
+  rc.value[1] = 2000;
+  rc.value[2] = 2000;
+  rc.value[3] = 2000;
+  rc.value[4] = 2000;
+  rc.value[5] = 2000;
+  rc.value[6] = 2000;
+  rc.value[7] = 2000;
 
 	HAL_ADC_Start(&hadc2);
 

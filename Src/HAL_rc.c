@@ -13,9 +13,9 @@ void rc_init()
 	rc.adc_min[rc_rol_num] = 2184;	rc.adc_max[rc_rol_num] = 4092;
 
 	rc.trim[rc_thr_num] = 0;
-	rc.trim[rc_yaw_num] = 6;
-	rc.trim[rc_pit_num] = 10;
-	rc.trim[rc_rol_num] = -2;
+	rc.trim[rc_yaw_num] = -3;
+	rc.trim[rc_pit_num] = -30;
+	rc.trim[rc_rol_num] = 2;
 
 	rc.direct[rc_thr_num] = 1;
 	rc.direct[rc_yaw_num] = 1;
@@ -24,4 +24,13 @@ void rc_init()
 	rc.direct[rc_aux1_num] = 1;
 	rc.direct[rc_aux2_num] = 1;
 	rc.direct[rc_push_num] = 1;
+
+	rc.value[rc_check_pin1] = '@';
+	rc.value[rc_check_pin2] = '#';
 }
+
+void rc_calib()
+{
+
+}
+

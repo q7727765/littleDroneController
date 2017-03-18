@@ -37,6 +37,6 @@ void configureScheduler(void);
 
 void taskSystem(void);
 void taskRcTransmit(void);
-void taskRUNLED(void);
+void taskLED(void);
 void taskUsartDebug(void);
 void taskBatteryMoniter(void);
