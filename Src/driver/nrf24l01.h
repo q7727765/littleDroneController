@@ -64,6 +64,9 @@
 #define RX_PLOAD_WIDTH  20  	//32字节的用户数据宽度
 
 
+extern u8 TX_ADDRESS[TX_ADR_WIDTH];
+
+
 void NRF24L01_Init(void);//初始化
 void NRF24L01_RX_Mode(void);//配置为接收模式
 void NRF24L01_TX_Mode(void);//配置为发送模式

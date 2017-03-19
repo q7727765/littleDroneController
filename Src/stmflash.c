@@ -2,7 +2,7 @@
 #include "delay.h"
 #include "usart.h"
 #include "HAL.h"
-
+#include "nrf24l01.h"
 
 #define EE_RC_THR_MAX	0
 #define EE_RC_THR_MIN	1
@@ -16,7 +16,7 @@
 #define EE_RC_ROL_MAX	9
 #define EE_RC_ROL_MIN	10
 #define EE_RC_ROL_TRIM	11
-
+#define EE_RC_TX_ADDR   12
 
 
 u32 VirtAddVarTab[] = {
@@ -24,11 +24,11 @@ u32 VirtAddVarTab[] = {
 		0xEE06, 0xEE08, 0xEE0A,//YAW_(MAX,MIN,TRIM)
 		0xEE1C, 0xEE1E, 0xEE20,//PIT_(MAX,MIN,TRIM)
 		0xEE22, 0xEE24, 0xEE26,//ROL_(MAX,MIN,TRIM)
-		0xEE28, 0xEE2A, 0xEE2C,//rate_yaw(P I D)
-		0xEE2E, 0xEE30, 0xEE32,//ang_rol(P I D)
-		0xEE34, 0xEE36, 0xEE38,//ang_pit(P I D)
-		0xEE3A, 0xEE3C, 0xEE3E,//ang_yaw(P I D)
-		0xEE40, 0xEE42, 0xEE44,//mag_offset(XYZ)
+		0xEE28, 0xEE2A, 0xEE2C,//(rc_tx_addr)
+		0xEE2E, 0xEE30, 0xEE32,//
+		0xEE34, 0xEE36, 0xEE38,//
+		0xEE3A, 0xEE3C, 0xEE3E,//
+		0xEE40, 0xEE42, 0xEE44,//
 };
 
 //////////////////////////////////////////////////////////////////////////////////	 
@@ -59,6 +59,20 @@ u32 VirtAddVarTab[] = {
 void Para_ResetToFactorySetup()
 {
 
+}
+
+void EE_SAVE_RC_TX_ADDR(void)
+{
+	EE_WriteVariable(VirtAddVarTab[EE_RC_TX_ADDR],TX_ADDRESS[4]);
+}
+
+void EE_READ_RC_TX_ADDR(void)
+{
+	int16_t temp;
+
+	EE_ReadVariable(VirtAddVarTab[EE_RC_TX_ADDR],&temp);
+
+	TX_ADDRESS[4] = (uint8_t)temp;
 }
 
 

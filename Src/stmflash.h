@@ -39,7 +39,8 @@ void Para_ResetToFactorySetup();
 u8 EE_ReadVariable(uint32_t VirtAddress, uint16_t* Data);
 u8 EE_WriteVariable(uint32_t VirtAddress, uint16_t Data);
 
-
+void EE_SAVE_RC_TX_ADDR(void);
+void EE_READ_RC_TX_ADDR(void);
 void EE_SAVE_RC_SET(void);
 void EE_READ_RC_SET(void);
 

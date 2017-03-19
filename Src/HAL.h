@@ -104,6 +104,7 @@ extern battery_t battery;
 
 void rc_init(void);
 void rc_calib(void);
+void rc_set_tx_addr(void);
 
 //void motor_init();
 //void motor_out(u16 m1,u16 m2,u16 m3,u16 m4);

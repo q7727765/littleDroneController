@@ -1,5 +1,7 @@
 #include "HAL.h"
 #include "nrf24l01.h"
+#include "delay.h"
+#include "stmflash.h"
 
 extern ADC_HandleTypeDef hadc1;
 extern ADC_HandleTypeDef hadc2;
@@ -48,3 +50,11 @@ void rc_calib(void)
 	rc.adc_trim[rc_rol_num] = HAL_ADCEx_InjectedGetValue(&hadc1,4);
 }
 
+void rc_set_tx_addr(void)
+{
+	uint32_t time = micros();
+
+	TX_ADDRESS[4] = (u8)time;
+
+	EE_SAVE_RC_TX_ADDR();
+}

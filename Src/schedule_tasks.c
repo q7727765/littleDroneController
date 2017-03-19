@@ -37,6 +37,9 @@ void taskUsartDebug(void)
 	SendInt(rc.value[rc_push_num]);
 	_n();
 
+	SendChar("RX_ADDR[4]:");
+	SendInt(TX_ADDRESS[4]);
+	_n();
 //	SendChar("rc_adc1:");
 //	SendInt(rc.adc_raw[rc_thr_num]);
 //	_n();
@@ -124,20 +127,30 @@ void taskRcTransmit(void)
 void taskKeyEven(void)
 {
 	static uint8_t key_down = 0,key_up = 1;
+	static uint16_t push_key_down_time = 0;
+
 	if(key_up == 1 && HAL_GPIO_ReadPin(pushkey_GPIO_Port,pushkey_Pin) == 0){
 		key_down = 1;
 		key_up   = 0;
-		return;
 	}else if(key_down == 1 && HAL_GPIO_ReadPin(pushkey_GPIO_Port,pushkey_Pin) == 0){
+		push_key_down_time++;
+		if(push_key_down_time == 100){
+			rc_set_tx_addr();
+		}
 
-		rc_calib_pass = 0;
-		rc_calib();
-		rc_calib_pass = 1;
-		while(HAL_GPIO_ReadPin(pushkey_GPIO_Port,pushkey_Pin) == 0);
+	}else if(key_down == 1 && HAL_GPIO_ReadPin(pushkey_GPIO_Port,pushkey_Pin) == 1){
 		key_down = 0;
 		key_up   = 1;
+		if(push_key_down_time > 100){
 
+		}else{
+			rc_calib_pass = 0;
+			rc_calib();
+			rc_calib_pass = 1;
+		}
+		push_key_down_time = 0;
 	}
+
 }
 
 void taskBatteryMoniter(void)

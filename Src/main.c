@@ -42,6 +42,8 @@
 #include "HAL.h"
 #include "config_tasks.h"
 #include "scheduler.h"
+#include "stmflash.h"
+
 /* USER CODE END Includes */
 
 /* Private variables ---------------------------------------------------------*/
@@ -90,6 +92,7 @@ void init(void)
 
 	NRF24L01_TX_Mode();
 
+	EE_READ_RC_TX_ADDR();
 	//EE_READ_RC_SET();
 }
 /* USER CODE END 0 */
