@@ -90,9 +90,10 @@ void init(void)
 	}
 	SendChar("nrf ok\r\n");
 
+	EE_READ_RC_TX_ADDR();
+
 	NRF24L01_TX_Mode();
 
-	EE_READ_RC_TX_ADDR();
 	//EE_READ_RC_SET();
 }
 /* USER CODE END 0 */

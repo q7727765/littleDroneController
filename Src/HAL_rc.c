@@ -52,9 +52,10 @@ void rc_calib(void)
 
 void rc_set_tx_addr(void)
 {
-	uint32_t time = micros();
+	uint32_t time = micros() % 0xff;
 
 	TX_ADDRESS[4] = (u8)time;
 
+	NRF24L01_TX_Mode();
 	EE_SAVE_RC_TX_ADDR();
 }
