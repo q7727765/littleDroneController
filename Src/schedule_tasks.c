@@ -141,7 +141,7 @@ void taskKeyEven(void)
 	}else if(key_down == 1 && HAL_GPIO_ReadPin(pushkey_GPIO_Port,pushkey_Pin) == 1){
 		key_down = 0;
 		key_up   = 1;
-		if(push_key_down_time > 100){
+		if(push_key_down_time > 200){
 			rc_set_tx_addr();
 		}else{
 			rc_calib_pass = 0;

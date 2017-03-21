@@ -73,6 +73,7 @@ void EE_READ_RC_TX_ADDR(void)
 	EE_ReadVariable(VirtAddVarTab[EE_RC_TX_ADDR],&temp);
 
 	TX_ADDRESS[4] = (uint8_t)temp;
+
 }
 
 

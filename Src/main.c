@@ -91,7 +91,8 @@ void init(void)
 	SendChar("nrf ok\r\n");
 
 	EE_READ_RC_TX_ADDR();
-
+	if(TX_ADDRESS[4] == 255)TX_ADDRESS[4] = (uint8_t)micros() % 255;
+	delay_ms(5);
 	NRF24L01_TX_Mode();
 
 	//EE_READ_RC_SET();
