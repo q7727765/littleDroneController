@@ -1,0 +1,9 @@
+.\output\delay.o: ..\Src\delay.c
+.\output\delay.o: ..\Src\delay.h
+.\output\delay.o: ..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f103xb.h
+.\output\delay.o: ..\Drivers\CMSIS\Include\core_cm3.h
+.\output\delay.o: D:\Work\Keil_5\ARM\ARMCC\bin\..\include\stdint.h
+.\output\delay.o: ..\Drivers\CMSIS\Include\core_cmInstr.h
+.\output\delay.o: ..\Drivers\CMSIS\Include\cmsis_armcc.h
+.\output\delay.o: ..\Drivers\CMSIS\Include\core_cmFunc.h
+.\output\delay.o: ..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\system_stm32f1xx.h

@@ -1,0 +1,11 @@
+.\output\usart.o: ..\Src\usart.c
+.\output\usart.o: ..\Src\usart.h
+.\output\usart.o: ..\Src\sys.h
+.\output\usart.o: ..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f103xb.h
+.\output\usart.o: ..\Drivers\CMSIS\Include\core_cm3.h
+.\output\usart.o: D:\Work\Keil_5\ARM\ARMCC\bin\..\include\stdint.h
+.\output\usart.o: ..\Drivers\CMSIS\Include\core_cmInstr.h
+.\output\usart.o: ..\Drivers\CMSIS\Include\cmsis_armcc.h
+.\output\usart.o: ..\Drivers\CMSIS\Include\core_cmFunc.h
+.\output\usart.o: ..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\system_stm32f1xx.h
+.\output\usart.o: D:\Work\Keil_5\ARM\ARMCC\bin\..\include\stdio.h

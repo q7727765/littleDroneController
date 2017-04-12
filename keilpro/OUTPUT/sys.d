@@ -1,0 +1,9 @@
+.\output\sys.o: ..\Src\sys.c
+.\output\sys.o: ..\Src\sys.h
+.\output\sys.o: ..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f103xb.h
+.\output\sys.o: ..\Drivers\CMSIS\Include\core_cm3.h
+.\output\sys.o: D:\Work\Keil_5\ARM\ARMCC\bin\..\include\stdint.h
+.\output\sys.o: ..\Drivers\CMSIS\Include\core_cmInstr.h
+.\output\sys.o: ..\Drivers\CMSIS\Include\cmsis_armcc.h
+.\output\sys.o: ..\Drivers\CMSIS\Include\core_cmFunc.h
+.\output\sys.o: ..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\system_stm32f1xx.h

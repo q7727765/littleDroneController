@@ -22,6 +22,10 @@ extern ADC_HandleTypeDef hadc2;
 battery_t battery;
 extern DMA_HandleTypeDef hdma_adc1;
 
+/*
+ * \brief 串口调试输出
+ * 周期：100ms
+ */
 void taskUsartDebug(void)
 {
 
@@ -70,6 +74,11 @@ void taskUsartDebug(void)
 	SendChar("usart running...\r\n");
 #endif
 }
+
+/*
+ * \brief 遥控数据处理与发射
+ * 周期：10ms
+ */
 void taskRcTransmit(void)
 {
 	HAL_ADCEx_InjectedStart(&hadc1);
@@ -124,6 +133,10 @@ void taskRcTransmit(void)
 
 }
 
+/*
+ * \brief 按键处理
+ * 周期：5ms
+ */
 void taskKeyEven(void)
 {
 	static uint8_t key_down = 0,key_up = 1;
@@ -153,6 +166,10 @@ void taskKeyEven(void)
 
 }
 
+/*
+ * \brief 电池电压检测任务
+ * 周期：500ms
+ */
 void taskBatteryMoniter(void)
 {
 
@@ -166,7 +183,10 @@ void taskBatteryMoniter(void)
 
 }
 
-
+/*
+ * \brief LED函数
+ * 周期：500ms
+ */
 void taskLED(void)
 {
 	static char sta = 0;

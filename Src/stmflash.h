@@ -35,7 +35,7 @@ typedef volatile uint8_t vu8;
 typedef volatile uint16_t vu16;
 typedef volatile uint32_t vu32;
 
-void Para_ResetToFactorySetup();
+void Para_ResetToFactorySetup(void);
 u8 EE_ReadVariable(uint32_t VirtAddress, uint16_t* Data);
 u8 EE_WriteVariable(uint32_t VirtAddress, uint16_t Data);
 
